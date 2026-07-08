@@ -1,0 +1,1588 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>document.documentElement.classList.add('js');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">.
+<link rel="icon" type="image/png" href="./imagen inicial.jpg">
+<title>Ankaa · Katherine, Terapeuta del Renacer</title>
+<meta name="description" content="Ankaa - Espacio terapéutico de Katherine. Acompañamiento emocional profesional en un espacio seguro y confidencial.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================================
+   ANKAA · Katherine, Terapeuta del Renacer
+   Design tokens
+   ========================================================================== */
+:root {
+  /* Color palette "” derived from the Ankaa logo */
+  --white:        #FFFFFF;
+  --cream:        #FBF6EC;   /* base background */
+  --cream-deep:   #F2E9D8;   /* secondary surface */
+  --gold:         #B6935C;   /* elegant, muted gold */
+  --gold-soft:    #E3D2AC;   /* light gold for hairlines */
+  --gold-dark:    #8F7040;   /* deeper gold for text accents */
+  --sky:          #E7EEF0;   /* soft light blue */
+  --sky-deep:     #D3E1E4;
+  --coffee:       #5B4432;   /* warm coffee */
+  --ink:          #3A2E22;   /* main text */
+  --ink-light:    #7A6A57;   /* secondary text */
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body:    'Jost', sans-serif;
+
+  /* Layout */
+  --container-w: 1140px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 32px;
+  --shadow-soft: 0 10px 40px -12px rgba(91, 68, 50, 0.18);
+  --shadow-hover: 0 18px 50px -14px rgba(91, 68, 50, 0.28);
+
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.65;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--coffee);
+  margin: 0;
+  font-weight: 500;
+}
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.container {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { position: relative; }
+
+/* Eyebrow label */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  line-height: 1.2;
+}
+
+.section-head { max-width: 640px; margin-bottom: 56px; }
+.section-head--center { max-width: 640px; margin-left: auto; margin-right: auto; text-align: center; }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 34px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease), color .35s var(--ease);
+  white-space: nowrap;
+}
+
+.btn--gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: var(--white);
+  box-shadow: 0 10px 30px -10px rgba(143, 112, 64, 0.55);
+}
+.btn--gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -10px rgba(143, 112, 64, 0.65);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--coffee);
+  border: 1px solid var(--gold-soft);
+}
+.btn--ghost:hover {
+  background: var(--cream-deep);
+  transform: translateY(-2px);
+}
+
+.btn--sm { padding: 10px 24px; font-size: 0.85rem; }
+
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(251, 246, 236, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(182, 147, 92, 0.18);
+  transition: background .3s var(--ease);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  gap: 20px;
+}
+
+.nav__brand { display: flex; align-items: center; gap: 10px; }
+.nav__logo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.nav__brand-text {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--coffee);
+  letter-spacing: 0.04em;
+}
+
+.nav__links {
+  display: flex;
+  gap: 30px;
+  flex: 1;
+  justify-content: center;
+}
+.nav__links a {
+  font-size: 0.86rem;
+  color: var(--ink-light);
+  position: relative;
+  padding: 4px 0;
+  transition: color .25s var(--ease);
+}
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width .3s var(--ease);
+}
+.nav__links a:hover { color: var(--coffee); }
+.nav__links a:hover::after { width: 100%; }
+
+.nav__cta { flex-shrink: 0; }
+
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+}
+.nav__toggle span {
+  width: 22px; height: 1.5px;
+  background: var(--coffee);
+  transition: transform .3s var(--ease), opacity .3s var(--ease);
+}
+.nav__toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav__toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav__toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 0 90px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, var(--sky) 0%, transparent 60%),
+    linear-gradient(180deg, var(--cream) 0%, var(--cream) 100%);
+}
+
+.hero__arc {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 1100px; height: 1100px;
+  max-width: 160vw; max-height: 160vw;
+  transform: translate(-50%, -46%);
+  border-radius: 50%;
+  border: 1px solid var(--gold-soft);
+  opacity: 0;
+  animation: arcIn 1.8s var(--ease) 0.2s forwards;
+  pointer-events: none;
+}
+.hero__arc::before {
+  content: '';
+  position: absolute;
+  inset: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(182, 147, 92, 0.25);
+}
+
+@keyframes arcIn {
+  from { opacity: 0; transform: translate(-50%, -46%) scale(0.92) rotate(-8deg); }
+  to   { opacity: 1; transform: translate(-50%, -46%) scale(1) rotate(0deg); }
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__mark { margin-bottom: 22px; }
+.hero__logo {
+  width: 128px; height: 128px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--shadow-soft);
+}
+
+.hero__name {
+  font-size: clamp(3rem, 8vw, 5.2rem);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.hero__role {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-top: 10px;
+}
+
+.hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-top: 30px;
+}
+.hero__tags li {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--coffee);
+  padding: 8px 18px;
+  border: 1px solid var(--gold-soft);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.5);
+}
+
+.hero__quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  color: var(--coffee);
+  max-width: 560px;
+  margin-top: 40px;
+  line-height: 1.5;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 18px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 34px; left: 50%;
+  transform: translateX(-50%);
+  width: 22px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  z-index: 2;
+}
+.hero__scroll span {
+  position: absolute;
+  top: 6px; left: 50%;
+  width: 4px; height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: scrollDot 1.8s ease-in-out infinite;
+}
+@keyframes scrollDot {
+  0% { top: 6px; opacity: 1; }
+  70% { opacity: 1; }
+  100% { top: 20px; opacity: 0; }
+}
+
+/* ==========================================================================
+   Reveal on scroll
+   ========================================================================== */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* Only hide-then-reveal once JS has confirmed it can run the animation */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+}
+.js .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+.hero .reveal { transition-delay: calc(var(--i, 0) * 90ms); }
+
+/* ==========================================================================
+   About
+   ========================================================================== */
+.about { padding: 130px 0; }
+
+.about__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.about__photo-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  aspect-ratio: 4/5;
+}
+.about__photo-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(155deg, var(--sky) 0%, var(--cream-deep) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  color: var(--ink-light);
+  border: 1px solid var(--gold-soft);
+}
+.about__photo-placeholder span { font-family: var(--font-display); font-size: 1.2rem; color: var(--coffee);}
+.about__photo-placeholder small { font-size: 0.78rem; letter-spacing: 0.04em; }
+
+.about__text {
+  font-size: 1.05rem;
+  color: var(--ink-light);
+  max-width: 52ch;
+  margin-top: 22px;
+}
+
+.about__divider {
+  width: 56px; height: 1px;
+  background: var(--gold);
+  margin: 30px 0 16px;
+}
+.about__signature {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--coffee);
+  font-size: 1.05rem;
+}
+
+/* ==========================================================================
+   Process
+   ========================================================================== */
+.process { padding: 110px 0; background: var(--cream-deep); }
+
+.process__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.process__step { text-align: center; padding: 10px; }
+.process__icon {
+  width: 76px; height: 76px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-dark);
+  box-shadow: var(--shadow-soft);
+}
+.process__icon svg { width: 32px; height: 32px; }
+.process__step h3 { font-size: 1.2rem; margin-bottom: 8px; }
+.process__step p { color: var(--ink-light); font-size: 0.92rem; }
+
+/* ==========================================================================
+   Services
+   ========================================================================== */
+.services { padding: 130px 0; }
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--gold-soft);
+  border-radius: var(--radius-md);
+  padding: 38px 26px;
+  text-align: center;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+.service-card__icon {
+  width: 60px; height: 60px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--sky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-dark);
+}
+.service-card__icon svg { width: 28px; height: 28px; }
+.service-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
+.service-card p { color: var(--ink-light); font-size: 0.9rem; }
+
+/* ==========================================================================
+   Why choose Ankaa
+   ========================================================================== */
+.why { padding: 110px 0; background: var(--cream-deep); }
+
+.why__grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.why__text { color: var(--ink-light); margin-top: 18px; max-width: 42ch; font-size: 1.02rem; }
+
+.why__list { display: flex; flex-direction: column; gap: 30px; }
+.why__item { display: flex; gap: 18px; align-items: flex-start; }
+.why__check {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+.why__item h3 { font-size: 1.08rem; margin-bottom: 4px; }
+.why__item p { color: var(--ink-light); font-size: 0.92rem; }
+
+/* ==========================================================================
+   Testimonials
+   ========================================================================== */
+.testimonials { padding: 130px 0; }
+
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.testimonial-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 36px 30px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.testimonial-card p {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--coffee);
+  font-size: 1.08rem;
+  line-height: 1.55;
+}
+.testimonial-card footer {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   FAQ / Accordion
+   ========================================================================== */
+.faq { padding: 110px 0; background: var(--cream-deep); }
+.faq__wrap { max-width: 760px; margin: 0 auto; }
+.faq .section-head { margin-left: auto; margin-right: auto; text-align: center; }
+
+.accordion__item {
+  border-bottom: 1px solid var(--gold-soft);
+}
+.accordion__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 4px;
+  text-align: left;
+  font-size: 1.02rem;
+  color: var(--coffee);
+  font-family: var(--font-display);
+}
+.accordion__icon {
+  position: relative;
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+}
+.accordion__icon::before, .accordion__icon::after {
+  content: '';
+  position: absolute;
+  background: var(--gold-dark);
+  transition: transform .3s var(--ease);
+}
+.accordion__icon::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+.accordion__icon::after { left: 50%; top: 0; height: 100%; width: 1px; transform: translateX(-50%); }
+.accordion__trigger[aria-expanded="true"] .accordion__icon::after { transform: translateX(-50%) rotate(90deg); opacity: 0; }
+
+.accordion__panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .4s var(--ease);
+}
+.accordion__panel p {
+  padding: 0 4px 24px;
+  color: var(--ink-light);
+  font-size: 0.95rem;
+  max-width: 60ch;
+}
+
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+.contact {
+  padding: 130px 0 110px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--cream) 0%, var(--sky) 140%);
+}
+.contact__arc {
+  position: absolute;
+  bottom: -300px; left: 50%;
+  width: 900px; height: 900px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 1px solid var(--gold-soft);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.contact__lead { color: var(--ink-light); margin-top: 14px; font-size: 1.02rem; }
+
+.contact__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.contact-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 34px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.contact-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.contact-card__icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--cream-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-dark);
+}
+.contact-card__icon svg { width: 26px; height: 26px; }
+.contact-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.contact-card__value { color: var(--ink-light); font-size: 0.86rem; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer { background: var(--coffee); color: var(--cream); padding: 70px 0 0; }
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 46px;
+  border-bottom: 1px solid rgba(251, 246, 236, 0.15);
+}
+
+.footer__brand { display: flex; align-items: center; gap: 14px; }
+.footer__logo { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
+.footer__name { font-family: var(--font-display); font-size: 1.3rem; color: var(--white); }
+.footer__tag { font-size: 0.78rem; letter-spacing: 0.08em; color: var(--gold-soft); }
+
+.footer__links { display: flex; flex-wrap: wrap; gap: 26px; }
+.footer__links a { font-size: 0.86rem; color: rgba(251,246,236,0.8); transition: color .25s var(--ease); }
+.footer__links a:hover { color: var(--gold-soft); }
+
+.footer__social { display: flex; gap: 16px; }
+.footer__social a {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(251,246,236,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .3s var(--ease), border-color .3s var(--ease);
+}
+.footer__social svg { width: 17px; height: 17px; }
+.footer__social a:hover { background: rgba(251,246,236,0.1); border-color: var(--gold-soft); }
+
+.footer__bottom {
+  padding: 22px 24px 26px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(251,246,236,0.6);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* Pantallas muy pequeñas (hasta 360px) */
+@media (max-width: 360px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .nav__brand-text {
+    display: none;
+  }
+
+  .nav__links a {
+    font-size: 0.78rem;
+    gap: 20px;
+  }
+
+  .hero {
+    padding: 100px 0 50px;
+  }
+
+  .hero__logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero__name {
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+  }
+
+  .hero__tags li {
+    font-size: 0.65rem;
+    padding: 5px 10px;
+  }
+
+  .hero__quote {
+    font-size: clamp(0.95rem, 2vw, 1.2rem);
+    margin-top: 24px;
+  }
+
+  .hero__actions {
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 0.8rem;
+  }
+
+  .btn--sm {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+  }
+
+  .about__photo-frame {
+    aspect-ratio: 3/4;
+  }
+
+  .about__text {
+    font-size: 0.95rem;
+  }
+
+  .process__icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .process__step h3 {
+    font-size: 1rem;
+  }
+
+  .service-card {
+    padding: 24px 16px;
+  }
+
+  .service-card h3 {
+    font-size: 1rem;
+  }
+
+  .testimonial-card {
+    padding: 24px 20px;
+  }
+
+  .testimonial-card p {
+    font-size: 0.95rem;
+  }
+
+  .accordion__trigger {
+    padding: 18px 2px;
+    font-size: 0.9rem;
+  }
+
+  .contact-card {
+    padding: 24px 16px;
+  }
+
+  .footer__inner {
+    gap: 20px;
+  }
+
+  .footer__brand {
+    gap: 10px;
+  }
+
+  .footer__logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .footer__links {
+    gap: 14px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__links a {
+    font-size: 0.78rem;
+  }
+
+  .footer__social {
+    gap: 10px;
+  }
+
+  .footer__social a {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* Pantallas pequeñas (481px - 640px) */
+@media (min-width: 361px) and (max-width: 640px) {
+  .container {
+    padding: 0 18px;
+  }
+
+  .nav__links {
+    gap: 20px;
+  }
+
+  .nav__links a {
+    font-size: 0.8rem;
+  }
+
+  .nav__cta {
+    display: none !important;
+  }
+
+  .nav__toggle {
+    display: flex;
+  }
+
+  .hero {
+    padding: 120px 0 60px;
+  }
+
+  .hero__logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .hero__name {
+    font-size: clamp(2.4rem, 7vw, 3.8rem);
+  }
+
+  .hero__tags {
+    gap: 8px 12px;
+    margin-top: 24px;
+  }
+
+  .hero__tags li {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+  }
+
+  .hero__quote {
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    margin-top: 28px;
+  }
+
+  .hero__actions {
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .btn {
+    padding: 13px 26px;
+    font-size: 0.85rem;
+  }
+
+  .btn--sm {
+    padding: 9px 18px;
+    font-size: 0.8rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3.2vw, 2rem);
+  }
+
+  .about, .process, .services, .why, .testimonials, .faq, .contact {
+    padding: 60px 0;
+  }
+
+  .about__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about__photo-frame {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .process__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 20px;
+  }
+
+  .process__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+  }
+
+  .process__step h3 {
+    font-size: 1.05rem;
+  }
+
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .service-card {
+    padding: 28px 20px;
+  }
+
+  .service-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+
+  .why__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .testimonials__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-card {
+    padding: 28px 24px;
+  }
+
+  .testimonial-card p {
+    font-size: 1rem;
+  }
+
+  .faq__wrap {
+    max-width: 100%;
+  }
+
+  .accordion__trigger {
+    padding: 20px 2px;
+    font-size: 0.95rem;
+  }
+
+  .accordion__panel p {
+    padding: 0 2px 20px;
+  }
+
+  .contact__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .contact-card {
+    padding: 28px 20px;
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .footer__links {
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .footer__social {
+    justify-content: center;
+  }
+}
+
+/* Tablets y pantallas medianas (641px - 980px) */
+@media (min-width: 641px) and (max-width: 980px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  .nav__links {
+    gap: 24px;
+  }
+
+  .nav__links a {
+    font-size: 0.85rem;
+  }
+
+  .nav__cta {
+    display: none !important;
+  }
+
+  .nav__toggle {
+    display: flex;
+  }
+
+  .hero {
+    padding: 140px 0 70px;
+  }
+
+  .hero__name {
+    font-size: clamp(3rem, 7.5vw, 4.5rem);
+  }
+
+  .hero__tags {
+    gap: 10px 14px;
+  }
+
+  .hero__tags li {
+    font-size: 0.75rem;
+    padding: 7px 16px;
+  }
+
+  .about, .process, .services, .why, .testimonials, .faq, .contact {
+    padding: 80px 0;
+  }
+
+  .about__grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .about__photo-frame {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .process__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px 28px;
+  }
+
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .why__grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .testimonials__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .footer__inner {
+    gap: 32px;
+  }
+}
+
+/* Tablets grandes (981px - 1199px) */
+@media (min-width: 981px) {
+  .about__grid, .why__grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 60px;
+  }
+
+  .about__photo-frame {
+    max-width: 100%;
+  }
+
+  .process__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+  }
+
+  .services__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .testimonials__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Escritorio completo (1200px+) */
+@media (min-width: 1200px) {
+  .process__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .services__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .testimonials__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contact__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero__arc { animation: none; opacity: 1; }
+  .hero__scroll span { animation: none; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="nav__inner container">
+    <a href="#inicio" class="nav__brand">
+      <img src="Imagen inicial.jpg" alt="Ankaa" class="nav__logo">
+      <span class="nav__brand-text">Ankaa</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#sobre">Sobre Katherine</a>
+      <a href="#proceso">Cómo funciona</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#testimonios">Testimonios</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a href="../Agendar/agendar.html" class="btn btn--gold btn--sm nav__cta">Agendar cita</a>
+    <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="hero__arc" aria-hidden="true"></div>
+  <div class="hero__inner container">
+    <div class="hero__mark reveal">
+      <img src="Imagen inicial.jpg" alt="Logotipo Ankaa, terapeuta del renacer" class="hero__logo">
+    </div>
+
+    <p class="eyebrow reveal">Ankaa</p>
+    <h1 class="hero__name reveal">Katherine</h1>
+    <p class="hero__role reveal">Terapeuta</p>
+
+    <ul class="hero__tags reveal" aria-label="Especializaciones">
+      <li>Especialización 1</li>
+      <li>Especialización 2</li>
+      <li>Especialización 3</li>
+      <li>Especialización 4</li>
+    </ul>
+
+    <p class="hero__quote reveal">"Dar el primer paso también es una forma de sanar."</p>
+
+    <div class="hero__actions reveal">
+      <a href="agendar.html" class="btn btn--gold">Agendar cita</a>
+      <a href="#sobre" class="btn btn--ghost">Conocer más</a>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><span></span></div>
+</section>
+
+<!-- ============ SOBRE KATHERINE ============ -->
+<section class="about" id="sobre">
+  <div class="container about__grid">
+    <div class="about__media reveal">
+      <div class="about__photo-frame">
+        <div class="about__photo-placeholder">
+          <span><img src="Foto kathe.png" style="border-radius: 20px;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="about__content reveal">
+      <p class="eyebrow">Sobre Katherine</p>
+      <h2 class="section-title">Un espacio para ser escuchado</h2>
+      <p class="about__text">
+        Katherine cuenta con aproximadamente 20 años de experiencia acompañando personas en sus procesos emocionales y psicológicos. Su enfoque está basado en la empatía, la escucha activa y el bienestar integral de cada paciente.
+      </p>
+      <div class="about__divider" aria-hidden="true"></div>
+      <p class="about__signature">Katherine · Fundadora de Ankaa</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CÃ“MO FUNCIONA ============ -->
+<section class="process" id="proceso">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">El camino</p>
+      <h2 class="section-title">¿Cómo funciona?</h2>
+    </div>
+
+    <div class="process__grid">
+      <div class="process__step reveal">
+        <div class="process__icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="9" y="12" width="30" height="27" rx="4" stroke="currentColor" stroke-width="1.6"/><path d="M9 20h30" stroke="currentColor" stroke-width="1.6"/><path d="M16 9v6M32 9v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Agenda tu cita</h3>
+        <p>Elige el momento que mejor se acomode a tu proceso.</p>
+      </div>
+
+      <div class="process__step reveal">
+        <div class="process__icon">
+          <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="15" stroke="currentColor" stroke-width="1.6"/><path d="M24 16v8l6 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Elige el horario</h3>
+        <p>Selecciona el horario disponible que prefieras.</p>
+      </div>
+
+      <div class="process__step reveal">
+        <div class="process__icon">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M14 25l7 7 14-16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="1.6"/></svg>
+        </div>
+        <h3>Confirma tus datos</h3>
+        <p>Completa la información necesaria para tu sesión.</p>
+      </div>
+
+      <div class="process__step reveal">
+        <div class="process__icon">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M24 8c-7 6-14 8-14 16 0 8 7 16 14 16s14-8 14-16c0-8-7-10-14-16z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Asiste a tu sesión</h3>
+        <p>Vive tu proceso en un espacio seguro y confidencial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICIOS ============ -->
+<section class="services" id="servicios">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Acompañamiento</p>
+      <h2 class="section-title">Servicios</h2>
+    </div>
+
+    <div class="services__grid">
+      <div class="service-card reveal">
+        <div class="service-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M10 40c0-8 6-13 14-13s14 5 14 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Terapia Individual</h3>
+        <p>Un espacio propio para explorar y comprender tus emociones.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><circle cx="17" cy="16" r="6" stroke="currentColor" stroke-width="1.6"/><circle cx="31" cy="16" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M6 40c0-7 5-11 11-11s11 4 11 11M20 40c0-7 5-11 11-11s11 4 11 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Terapia de Pareja</h3>
+        <p>Fortalece la comunicación y el vínculo con tu compañero de vida.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><circle cx="14" cy="14" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="34" cy="14" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="24" cy="16" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M6 40c0-6 4-10 9-10M43 40c0-6-4-10-9-10M15 40c0-7 5-11 9-11s9 4 9 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Terapia Familiar</h3>
+        <p>Construye armonía y entendimiento dentro del núcleo familiar.</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="14" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M14 40c0-7 5-12 10-12s10 5 10 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M24 4v3M18 6l1.5 2.5M30 6l-1.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Terapia Infantil</h3>
+        <p>Acompañamiento cálido y adaptado para los más pequeños del hogar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POR QUÉ ELEGIR ============ -->
+<section class="why">
+  <div class="container why__grid">
+    <div class="why__content reveal">
+      <p class="eyebrow">Ankaa</p>
+      <h2 class="section-title">¿Por qué elegir Ankaa?</h2>
+      <p class="why__text">Cada sesión está pensada para que te sientas acompañado, respetado y en confianza durante todo tu proceso.</p>
+    </div>
+
+    <ul class="why__list">
+      <li class="why__item reveal">
+        <span class="why__check">✓</span>
+        <div><h3>Atención personalizada</h3><p>Cada proceso se adapta a tu historia y tus tiempos.</p></div>
+      </li>
+      <li class="why__item reveal">
+        <span class="why__check">✓</span>
+        <div><h3>Más de 20 años de experiencia</h3><p>Trayectoria sólida acompañando procesos emocionales.</p></div>
+      </li>
+      <li class="why__item reveal">
+        <span class="why__check">✓</span>
+        <div><h3>Espacio seguro y confidencial</h3><p>Todo lo que compartas permanece resguardado.</p></div>
+      </li>
+      <li class="why__item reveal">
+        <span class="why__check">✓</span>
+        <div><h3>Acompañamiento profesional</h3><p>Un enfoque ético, cálido y basado en la evidencia.</p></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIOS ============ -->
+<section class="testimonials" id="testimonios">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Experiencias</p>
+      <h2 class="section-title">Testimonios</h2>
+    </div>
+
+    <div class="testimonials__grid">
+      <blockquote class="testimonial-card reveal">
+        <p>"Encontré un espacio donde por fin pude hablar sin sentirme juzgada. Cada sesión me ha dado más claridad y calma."</p>
+        <footer>"” Paciente de Terapia Individual</footer>
+      </blockquote>
+
+      <blockquote class="testimonial-card reveal">
+        <p>"Como pareja aprendimos a comunicarnos de una forma que no creíamos posible. Estamos muy agradecidos con el proceso."</p>
+        <footer>"” Pacientes de Terapia de Pareja</footer>
+      </blockquote>
+
+      <blockquote class="testimonial-card reveal">
+        <p>"El acompañamiento fue cercano y respetuoso en todo momento. Sentí que mi proceso avanzaba a mi propio ritmo."</p>
+        <footer>"” Paciente de Terapia Familiar</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREGUNTAS FRECUENTES ============ -->
+<section class="faq" id="preguntas">
+  <div class="container faq__wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Dudas comunes</p>
+      <h2 class="section-title">Preguntas frecuentes</h2>
+    </div>
+
+    <div class="accordion reveal">
+      <div class="accordion__item">
+        <button class="accordion__trigger" aria-expanded="false">
+          <span>¿Cómo puedo agendar?</span>
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__panel">
+          <p>Puedes agendar tu cita a través de WhatsApp o correo electrónico, indicando el servicio de tu interés y tu disponibilidad.</p>
+        </div>
+      </div>
+
+      <div class="accordion__item">
+        <button class="accordion__trigger" aria-expanded="false">
+          <span>¿Cuánto dura una sesión?</span>
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__panel">
+          <p>Cada sesión tiene una duración aproximada, que se confirmará contigo al momento de agendar según el tipo de terapia.</p>
+        </div>
+      </div>
+
+      <div class="accordion__item">
+        <button class="accordion__trigger" aria-expanded="false">
+          <span>¿Las sesiones son virtuales o presenciales?</span>
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__panel">
+          <p>Ankaa ofrece ambas modalidades para que elijas la que mejor se adapte a tu comodidad y necesidades.</p>
+        </div>
+      </div>
+
+      <div class="accordion__item">
+        <button class="accordion__trigger" aria-expanded="false">
+          <span>¿Puedo cancelar una cita?</span>
+          <span class="accordion__icon" aria-hidden="true"></span>
+        </button>
+        <div class="accordion__panel">
+          <p>Sí, puedes cancelar o reprogramar tu cita contactando con anticipación a través de los canales de contacto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section class="contact" id="contacto">
+  <div class="contact__arc" aria-hidden="true"></div>
+  <div class="container contact__inner">
+    <div class="section-head section-head--center reveal">
+      <p class="eyebrow">Estamos aquí</p>
+      <h2 class="section-title">Hablemos</h2>
+      <p class="contact__lead">Escríbenos y demos juntos el primer paso.</p>
+    </div>
+
+    <div class="contact__grid">
+      <a href="https://wa.me/573159054054" target="_blank" class="contact-card reveal">
+        <div class="contact-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M24 8a16 16 0 00-13.7 24.3L8 40l8-2.2A16 16 0 1024 8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 20.5c1 5 4.5 8.5 9.5 9.5l2-3 4 1.5c0 3-2 4.5-4.5 4.5-7 0-13-6-13-13 0-2.5 1.5-4.5 4.5-4.5l1.5 4-3 1z" fill="currentColor"/></svg>
+        </div>
+        <h3>WhatsApp</h3>
+        <p class="contact-card__value">+57 315 9054054</p>
+      </a>
+
+      <a href="https://www.instagram.com/ankaa_terapeuta_que_sana/?hl=es" class="contact-card reveal">
+        <div class="contact-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="8" y="8" width="32" height="32" rx="9" stroke="currentColor" stroke-width="1.6"/><circle cx="24" cy="24" r="7" stroke="currentColor" stroke-width="1.6"/><circle cx="33" cy="15" r="1.6" fill="currentColor"/></svg>
+        </div>
+        <h3>Instagram</h3>
+        <p class="contact-card__value">@ankaa_terapeuta_que_sana</p>
+      </a>
+
+      <a href="#" class="contact-card reveal">
+        <div class="contact-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><rect x="7" y="12" width="34" height="24" rx="4" stroke="currentColor" stroke-width="1.6"/><path d="M9 14l15 12 15-12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Correo</h3>
+        <p class="contact-card__value">[ Espacio para correo ]</p>
+      </a>
+
+      <div class="contact-card reveal">
+        <div class="contact-card__icon">
+          <svg viewBox="0 0 48 48" fill="none"><path d="M24 5c-8 0-14 6-14 14 0 10 14 24 14 24s14-14 14-24c0-8-6-14-14-14z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="24" cy="19" r="5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </div>
+        <h3>Ubicación</h3>
+        <p class="contact-card__value">[ Espacio para dirección ]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <img src="Imagen inicial.jpg" alt="Ankaa" class="footer__logo">
+      <div>
+        <p class="footer__name">Ankaa</p>
+        <p class="footer__tag">Terapeuta del Renacer</p>
+      </div>
+    </div>
+
+    <nav class="footer__links" aria-label="Enlaces rápidos">
+      <a href="#sobre">Sobre Katherine</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#testimonios">Testimonios</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="footer__social" aria-label="Redes sociales">
+      <a href="https://www.instagram.com/ankaa_terapeuta_que_sana/?hl=es" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://wa.me/573159054054" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.3A9 9 0 1012 3z" stroke="currentColor" stroke-width="1.5"/></svg>
+      </a>
+      <a href="#" aria-label="Correo">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.5"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer__bottom container">
+    <p>© <span id="year"></span> Ankaa - Katherine, Terapeuta. Todos los derechos reservados.</p>
+  </div>
+</footer>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+  try {
+    const revealEls = document.querySelectorAll(".reveal");
+    document.querySelectorAll(".hero .reveal").forEach((el, i) => {
+      el.style.setProperty("--i", i);
+    });
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if ("IntersectionObserver" in window && !prefersReducedMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+      revealEls.forEach(el => observer.observe(el));
+      setTimeout(() => {
+        revealEls.forEach(el => el.classList.add("is-visible"));
+      }, 2500);
+    } else {
+      revealEls.forEach(el => el.classList.add("is-visible"));
+    }
+  } catch (err) {
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("is-visible"));
+    console.error("Ankaa reveal error:", err);
+  }
+  try {
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  } catch (err) {
+    console.error("Ankaa year error:", err);
+  }
+  try {
+    const nav = document.getElementById("nav");
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    if (navToggle && nav) {
+      navToggle.addEventListener("click", () => {
+        const isOpen = nav.classList.toggle("is-open");
+        navToggle.classList.toggle("is-open", isOpen);
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          nav.classList.remove("is-open");
+          navToggle.classList.remove("is-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+    const onScroll = () => {
+      if (!nav) return;
+      nav.style.boxShadow = window.scrollY > 12 ? "0 8px 30px -18px rgba(91,68,50,0.35)" : "none";
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  } catch (err) {
+    console.error("Ankaa nav error:", err);
+  }
+  try {
+    const accordionItems = document.querySelectorAll(".accordion__item");
+    accordionItems.forEach(item => {
+      const trigger = item.querySelector(".accordion__trigger");
+      const panel = item.querySelector(".accordion__panel");
+      trigger.addEventListener("click", () => {
+        const isOpen = trigger.getAttribute("aria-expanded") === "true";
+        accordionItems.forEach(other => {
+          if (other !== item) {
+            other.querySelector(".accordion__trigger").setAttribute("aria-expanded", "false");
+            other.querySelector(".accordion__panel").style.maxHeight = null;
+          }
+        });
+        trigger.setAttribute("aria-expanded", String(!isOpen));
+        panel.style.maxHeight = isOpen ? null : panel.scrollHeight + "px";
+      });
+    });
+  } catch (err) {
+    console.error("Ankaa accordion error:", err);
+  }
+
+});
+</script>
+
+</body>
+</html>
+
+
