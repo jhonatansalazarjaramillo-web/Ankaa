@@ -1,0 +1,213 @@
+/* =========================================================
+   SIDEBAR — NAVEGACIÓN DE ESCRITORIO
+   ========================================================= */
+
+.side-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: var(--ancho-nav-lateral);
+  padding: var(--espacio-xl) var(--espacio-md);
+
+  flex-direction: column;
+
+  background: var(--color-blanco);
+  border-right: 1px solid var(--color-borde);
+
+  z-index: var(--z-nav);
+}
+
+/* Marca */
+
+.side-nav__marca {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-sm);
+
+  padding: 0 var(--espacio-xs);
+  margin-bottom: var(--espacio-2xl);
+}
+
+.side-nav__marca .avatar-marca {
+  width: 42px;
+  height: 42px;
+
+  object-fit: cover;
+  border-radius: var(--radio-redondo);
+
+  border: 1px solid var(--color-dorado-suave);
+}
+
+.side-nav__marca .marca {
+  font-family: var(--fuente-display);
+  font-size: var(--texto-lg);
+  color: var(--color-cafe);
+  letter-spacing: 0.04em;
+}
+
+/* Menú */
+
+.side-nav__menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-xs);
+}
+
+/* Elementos */
+
+.side-nav .nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-md);
+
+  width: 100%;
+  min-height: 48px;
+
+  padding: var(--espacio-sm) var(--espacio-md);
+
+  border-radius: var(--radio-md);
+
+  color: var(--color-cafe-suave);
+
+  transition:
+    background var(--velocidad-normal) var(--curva-suave),
+    color var(--velocidad-normal) var(--curva-suave),
+    transform var(--velocidad-rapida) var(--curva-suave);
+}
+
+.side-nav .nav-item:hover {
+  background: var(--color-beige-suave);
+  color: var(--color-cafe);
+}
+
+.side-nav .nav-item:active {
+  transform: scale(0.98);
+}
+
+/* Iconos */
+
+.side-nav .nav-item .icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  flex-shrink: 0;
+}
+
+.side-nav .nav-item .icono svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Texto */
+
+.side-nav .nav-item__etiqueta {
+  font-size: var(--texto-sm);
+  font-weight: 500;
+}
+
+/* Elemento activo */
+
+.side-nav .nav-item.esta-activo {
+  color: var(--color-cafe);
+  background: var(--color-beige-suave);
+  font-weight: 600;
+}
+
+.side-nav .nav-item.esta-activo .icono {
+  color: var(--color-dorado);
+}
+
+/* Línea decorativa del elemento activo */
+
+.side-nav .nav-item.esta-activo::before {
+  content: "";
+
+  position: absolute;
+  left: 0;
+
+  width: 3px;
+  height: 28px;
+
+  background: var(--color-dorado);
+  border-radius: 0 var(--radio-sm) var(--radio-sm) 0;
+}
+
+/* Mostrar sidebar únicamente en escritorio */
+
+@media (min-width: 1024px) {
+  .side-nav {
+    display: flex;
+  }
+}
+
+#app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-blanco);
+}
+
+/* ---- Header ---- */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--alto-header);
+  padding: 0 var(--espacio-md);
+  background: var(--color-blanco);
+  border-bottom: 1px solid var(--color-beige);
+}
+
+/* ---- Contenido principal ---- */
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho-maximo-contenido);
+  margin: 0 auto;
+  padding: var(--espacio-lg) var(--espacio-md);
+  padding-bottom: calc(var(--alto-nav-inferior) + var(--espacio-lg) + env(safe-area-inset-bottom, 0px));
+}
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-maximo-contenido);
+  margin: 0 auto;
+  padding: 0 var(--espacio-md);
+}
+
+/* ---- Navegación inferior (móvil) ---- */
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ---- Navegación lateral (escritorio) ---- */
+
+.side-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: var(--z-nav);
+  flex-direction: column;
+  width: var(--ancho-nav-lateral);
+}

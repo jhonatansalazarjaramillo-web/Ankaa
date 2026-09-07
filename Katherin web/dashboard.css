@@ -1,0 +1,161 @@
+.vista--dashboard > section {
+  margin-bottom: var(--espacio-xl);
+}
+
+/* -----------------------------------------------------------------------
+   Header
+   ----------------------------------------------------------------------- */
+
+.header__marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* -----------------------------------------------------------------------
+   Saludo
+   ----------------------------------------------------------------------- */
+
+.saludo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-md);
+}
+
+.saludo__fecha {
+  white-space: nowrap;
+  margin-top: 6px;
+}
+
+/* -----------------------------------------------------------------------
+   Resumen (tarjetas de conteo)
+   ----------------------------------------------------------------------- */
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espacio-sm);
+}
+
+.tarjeta-resumen {
+  text-align: center;
+}
+
+.tarjeta-resumen__numero {
+  font-family: var(--fuente-display);
+  font-size: var(--texto-2xl);
+  font-weight: 600;
+  color: var(--color-cafe);
+}
+
+.tarjeta-resumen__etiqueta {
+  font-size: var(--texto-xs);
+  color: var(--color-cafe-suave);
+  margin-top: 2px;
+}
+
+/* -----------------------------------------------------------------------
+   Próximas citas / Acciones rápidas — títulos de sección
+   ----------------------------------------------------------------------- */
+
+.proximas-citas h2,
+.acciones-rapidas h2 {
+  font-size: var(--texto-lg);
+  margin-bottom: var(--espacio-sm);
+}
+
+/* -----------------------------------------------------------------------
+   Paciente dentro de la tarjeta de cita (iniciales + nombre)
+   ----------------------------------------------------------------------- */
+
+.tarjeta-cita__paciente {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-xs);
+}
+
+.avatar-iniciales {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-dorado-suave);
+  color: var(--color-cafe);
+  font-size: var(--texto-2xs);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boton-menu {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cafe-suave);
+  border-radius: var(--radio-sm);
+  transition: color var(--velocidad-rapida) var(--curva-suave),
+              background var(--velocidad-rapida) var(--curva-suave);
+}
+
+.boton-menu:hover {
+  color: var(--color-cafe);
+  background: var(--color-beige-suave);
+}
+
+/* -----------------------------------------------------------------------
+   Píldora de estado adicional (no forma parte del flujo de decisión de
+   Katherine; es una lectura informativa de citas ya realizadas)
+   ----------------------------------------------------------------------- */
+
+.pill--completada {
+  background: var(--color-beige);
+  color: var(--color-cafe-suave);
+}
+
+/* -----------------------------------------------------------------------
+   Aviso de comprobantes
+   ----------------------------------------------------------------------- */
+
+.aviso-comprobantes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-md);
+  background: var(--color-beige-suave);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-md);
+}
+
+.aviso-comprobantes__texto {
+  font-size: var(--texto-sm);
+  color: var(--color-cafe);
+  flex: 1;
+  min-width: 200px;
+}
+
+/* -----------------------------------------------------------------------
+   Acciones rápidas
+   ----------------------------------------------------------------------- */
+
+.acciones-rapidas__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-sm);
+}
+
+/* -----------------------------------------------------------------------
+   Responsive
+   ----------------------------------------------------------------------- */
+
+@media (min-width: 640px) {
+  .resumen {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

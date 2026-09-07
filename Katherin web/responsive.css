@@ -1,0 +1,60 @@
+@media (min-width: 640px) {
+  .app-main {
+    padding: var(--espacio-xl) var(--espacio-lg);
+    padding-bottom: calc(var(--alto-nav-inferior) + var(--espacio-xl) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .lista-citas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--espacio-sm);
+  }
+
+  .modal {
+    max-height: 80vh;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottom-nav {
+    display: none;
+  }
+
+  .side-nav {
+    display: flex;
+  }
+
+  .app-header {
+    padding-left: calc(var(--ancho-nav-lateral) + var(--espacio-lg));
+  }
+
+  .app-main {
+    margin-left: var(--ancho-nav-lateral);
+    max-width: calc(var(--ancho-maximo-contenido) + var(--ancho-nav-lateral));
+    padding-bottom: var(--espacio-xl);
+  }
+
+  .lista-citas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #toast-root {
+    bottom: var(--espacio-lg);
+    left: var(--ancho-nav-lateral);
+  }
+
+  .modal {
+    top: var(--alto-header);
+    left: auto;
+    right: 0;
+    bottom: 0;
+    width: min(440px, 40vw);
+    max-height: none;
+    border-radius: var(--radio-xl) 0 0 0;
+  }
+
+  @keyframes subir-modal {
+    from { transform: translateX(24px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+}

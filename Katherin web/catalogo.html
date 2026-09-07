@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ankaa · Tienda</title>
+<link rel="icon" href="Imagen inicial.jpg">  
+<link rel="stylesheet" href="catalogo.css">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+ </head>
+<body>
+
+<header class="encabezado-nav">
+  <a class="encabezado-nav__logo" href="agendar.html">
+    <img src="data:image/jpeg;base64,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" alt="Ankaa" />
+  </a>
+  <nav class="encabezado-nav__enlaces">
+    <a href="landingpage.html ">Inicio</a>
+    <a href="agendar.html">Agendar cita</a>
+  </nav>
+</header>
+
+<div class="encabezado">
+  <p class="encabezado__marca">Ankaa</p>
+  <h1 class="encabezado__titulo">Tienda</h1>
+  <p class="encabezado__subtitulo">Jabones y shampoos artesanales</p>
+</div>
+
+<main class="catalogo">
+
+  <a class="producto" href="#producto-1">
+    <div class="producto__imagen">
+      <img src="Antitranspirante Natural.png">
+    </div>
+    <div class="producto__info">
+      <p class="producto__nombre">Desodorante Natural</p>
+      <p class="producto__descripcion">Desodorante natural, hecho a mano.</p>
+      <p class="producto__precio">$18.000</p>
+      <button class="producto__boton" type="button" data-name="Desodorante Natural" data-price="18000">Agregar al carrito</button>
+    </div>
+  </a>
+
+  <a class="producto" href="#producto-2">
+    <div class="producto__imagen">
+      <img src="Cafe.png">
+    </div>
+    <div class="producto__info">
+      <p class="producto__nombre">Cafe Origen Divino</p>
+      <p class="producto__descripcion">El cafe recomendado para comenzar tu dia con alegria.</p>
+      <p class="producto__precio">$24.000</p>
+      <button class="producto__boton" type="button" data-name="Cafe Origen Divino" data-price="24000">Agregar al carrito</button>
+    </div>
+  </a>
+
+  <a class="producto" href="#producto-3">
+    <div class="producto__imagen">
+      <img src="Probiotico.png">
+    </div>
+    <div class="producto__info">
+      <p class="producto__nombre">Probiotico Natural y organico</p>
+      <p class="producto__descripcion">Probiotico natural, el mejor para fortalecer tu sistema inmunologico.</p>
+      <p class="producto__precio">$19.000</p>
+      <button class="producto__boton" type="button" data-name="Probiotico Natural y organico" data-price="19000">Agregar al carrito</button>
+    </div>
+  </a>
+
+
+  <a class="producto" href="#producto-4">
+    <div class="producto__imagen">
+      <img src="Crema Dental.png">
+    </div>
+    <div class="producto__info">
+      <p class="producto__nombre">Crema Dental</p>
+      <p class="producto__descripcion">Perfecta para tu salud oral.</p>
+      <p class="producto__precio">$20.000</p>
+      <button class="producto__boton" type="button" data-name="Crema Dental" data-price="20000">Agregar al carrito</button>
+    </div>
+  </a>
+
+<!-- ---- Detalles (:target) ---- -->
+
+<div class="detalle" id="producto-1">
+  <a class="detalle__fondo" href="#"></a>
+  <div class="detalle__panel">
+    <a class="detalle__cerrar" href="#">✕</a>
+    <div class="detalle__imagen">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5"/></svg>
+    </div>
+    <h2 class="detalle__nombre">Desodorante Natural</h2>
+    <p class="detalle__precio">$18.000</p>
+    <p class="detalle__descripcion">Un desodorante sin quimicos nocivos, con protección natural, delicado y cuidadoso con tu piel, sin perfumes nocivo.</p>
+    <button class="detalle__boton" type="button" data-name="Desodorante Natural" data-price="18000">Agregar al carrito</button>
+  </div>
+</div>
+
+<div class="detalle" id="producto-2">
+  <a class="detalle__fondo" href="#"></a>
+  <div class="detalle__panel">
+    <a class="detalle__cerrar" href="#">✕</a>
+    <div class="detalle__imagen">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 3h6v3.5l2 3V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.5l2-3V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </div>
+    <h2 class="detalle__nombre">Cafe Origen Divino</h2>
+    <p class="detalle__precio">$24.000</p>
+    <p class="detalle__descripcion">Cafe 100% organico, con mas energia natural, mejora tu estado de animo y favorece tu digestion, el alido favorito para tu corazón.</p>
+    <button class="detalle__boton" type="button" data-name="Cafe Origen Divino" data-price="24000">Agregar al carrito</button>
+  </div>
+</div>
+
+<div class="detalle" id="producto-3">
+  <a class="detalle__fondo" href="#"></a>
+  <div class="detalle__panel">
+    <a class="detalle__cerrar" href="#">✕</a>
+    <div class="detalle__imagen">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.5"/></svg>
+    </div>
+    <h2 class="detalle__nombre">Probiotico Natural y Organico</h2>
+    <p class="detalle__precio">$19.000</p>
+    <p class="detalle__descripcion">Restaura y equilibra la microbiota intestinal, fortalece tu sistema inmunológico, Mejora la indigestión y la absorción de nutrientes, el mejor ayudante para desintoxicar tu organismo de forma natural </p>
+    <button class="detalle__boton" type="button" data-name="Probiotico Natural y organico" data-price="19000">Agregar al carrito</button>
+  </div>
+</div>
+
+<div class="detalle" id="producto-4">
+  <a class="detalle__fondo" href="#"></a>
+  <div class="detalle__panel">
+    <a class="detalle__cerrar" href="#">✕</a>
+    <div class="detalle__imagen">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 3h6v3.5l2 3V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.5l2-3V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </div>
+    <h2 class="detalle__nombre">Crema Dental</h2>
+    <p class="detalle__precio">$26.000</p>
+    <p class="detalle__descripcion">Crema dental sin flúor, sin químicos, con ingredientes naturales, aliento fresco y protección natural.</p>
+    <button class="detalle__boton" type="button" data-name="Crema Dental" data-price="20000">Agregar al carrito</button>
+  </div>
+</div>
+
+<button class="carrito-toggle" id="carrito-toggle" type="button" aria-label="Abrir carrito">
+  <span class="carrito-toggle__icon">🛍️</span>
+  <span class="carrito-toggle__badge" id="carrito-count">0</span>
+  <span class="carrito-toggle__feedback" id="carrito-feedback">↗</span>
+</button>
+
+<div class="carrito-backdrop" id="carrito-backdrop"></div>
+<div class="carrito-panel" id="carrito-panel" aria-live="polite">
+  <div class="carrito-panel__header">
+    <h2>Tu compra</h2>
+    <button class="carrito-panel__close" id="carrito-close" type="button" aria-label="Cerrar carrito">✕</button>
+  </div>
+  <div class="carrito-panel__lista" id="carrito-lista"></div>
+  <div class="carrito-panel__footer">
+    <div class="carrito-panel__total">
+      <span>Total</span>
+      <strong id="carrito-total">$0</strong>
+    </div>
+  </div>
+</div>
+
+<script>
+  const carritoToggle = document.getElementById('carrito-toggle');
+  const carritoBackdrop = document.getElementById('carrito-backdrop');
+  const carritoPanel = document.getElementById('carrito-panel');
+  const carritoClose = document.getElementById('carrito-close');
+  const carritoLista = document.getElementById('carrito-lista');
+  const carritoTotal = document.getElementById('carrito-total');
+  const carritoCount = document.getElementById('carrito-count');
+  const carritoFeedback = document.getElementById('carrito-feedback');
+
+  let carrito = [];
+  let timeoutAnimacion;
+
+  function formatearPrecio(valor) {
+    return `$${valor.toLocaleString('es-CO')}`;
+  }
+
+  function renderCarrito() {
+    if (!carrito.length) {
+      carritoLista.innerHTML = '<p class="carrito-panel__empty">Tu carrito está vacío.</p>';
+      carritoTotal.textContent = formatearPrecio(0);
+      carritoCount.textContent = '0';
+      return;
+    }
+
+    const total = carrito.reduce((suma, item) => suma + item.price * item.qty, 0);
+    const cantidadTotal = carrito.reduce((suma, item) => suma + item.qty, 0);
+
+    carritoCount.textContent = cantidadTotal;
+    carritoTotal.textContent = formatearPrecio(total);
+
+    carritoLista.innerHTML = carrito.map((item) => `
+      <div class="carrito-item">
+        <div class="carrito-item__name">${item.name}</div>
+        <div class="carrito-item__meta">
+          <span class="carrito-item__qty">x${item.qty}</span>
+          <span>${formatearPrecio(item.price * item.qty)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function abrirCarrito() {
+    carritoPanel.classList.add('is-open');
+    carritoBackdrop.classList.add('is-open');
+  }
+
+  function cerrarCarrito() {
+    carritoPanel.classList.remove('is-open');
+    carritoBackdrop.classList.remove('is-open');
+  }
+
+  function agregarAlCarrito(nombre, precio) {
+    const productoExistente = carrito.find((item) => item.name === nombre);
+
+    if (productoExistente) {
+      productoExistente.qty += 1;
+    } else {
+      carrito.push({ name: nombre, price: precio, qty: 1 });
+    }
+
+    renderCarrito();
+    abrirCarrito();
+
+    carritoToggle.classList.add('carrito-toggle--added');
+    clearTimeout(timeoutAnimacion);
+    timeoutAnimacion = setTimeout(() => {
+      carritoToggle.classList.remove('carrito-toggle--added');
+    }, 450);
+  }
+
+  document.querySelectorAll('.producto__boton, .detalle__boton').forEach((boton) => {
+    boton.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      agregarAlCarrito(boton.dataset.name, Number(boton.dataset.price));
+    });
+  });
+
+  carritoToggle.addEventListener('click', (event) => {
+    if (event.target === carritoToggle || event.target.closest('.carrito-toggle')) {
+      if (carritoPanel.classList.contains('is-open')) {
+        cerrarCarrito();
+      } else {
+        abrirCarrito();
+      }
+    }
+  });
+
+  let dragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  function actualizarPosicionBoton(x, y) {
+    const maxX = window.innerWidth - carritoToggle.offsetWidth - 12;
+    const maxY = window.innerHeight - carritoToggle.offsetHeight - 12;
+    const nextX = Math.min(Math.max(x, 12), maxX);
+    const nextY = Math.min(Math.max(y, 12), maxY);
+
+    carritoToggle.style.right = 'auto';
+    carritoToggle.style.bottom = 'auto';
+    carritoToggle.style.left = `${nextX}px`;
+    carritoToggle.style.top = `${nextY}px`;
+  }
+
+  carritoToggle.addEventListener('pointerdown', (event) => {
+    dragging = true;
+    const rect = carritoToggle.getBoundingClientRect();
+    offsetX = event.clientX - rect.left;
+    offsetY = event.clientY - rect.top;
+    carritoToggle.setPointerCapture(event.pointerId);
+  });
+
+  window.addEventListener('pointermove', (event) => {
+    if (!dragging) return;
+    event.preventDefault();
+    const x = event.clientX - offsetX;
+    const y = event.clientY - offsetY;
+    actualizarPosicionBoton(x, y);
+  });
+
+  window.addEventListener('pointerup', () => {
+    dragging = false;
+  });
+
+  carritoClose.addEventListener('click', cerrarCarrito);
+  carritoBackdrop.addEventListener('click', cerrarCarrito);
+
+  renderCarrito();
+</script>
+</body>
+</html>
