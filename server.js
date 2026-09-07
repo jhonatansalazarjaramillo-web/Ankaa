@@ -105,6 +105,23 @@ app.patch('/api/citas/:id/estado', (req, res) => {
   }
 });
 
+// 4. Consultar horas ocupadas por fecha
+app.get('/api/horarios-ocupados/:fecha', (req, res) => {
+  try {
+    const { fecha } = req.params;
+    const db = leerDB();
+    
+    // Filtramos los horarios de esa fecha que ya estén marcados como 'Ocupado'
+    const ocupados = db.horarios
+      .filter(h => h.fecha === fecha && h.estado === 'Ocupado')
+      .map(h => h.horaInicio);
+      
+    res.json(ocupados);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al consultar disponibilidad' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log('\n========================================');
   console.log('       SISTEMA ANKAA EN LÍNEA          ');

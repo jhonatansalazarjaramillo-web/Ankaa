@@ -1270,14 +1270,6 @@ textarea:focus-visible,
 
       return true; // Lunes a sábado habilitados
     }
-    function horariosOcupadosPara(fecha) {
-      const semilla = fecha.getDate();
-      const ocupados = [];
-      if (semilla % 2 === 0) ocupados.push("09:00 AM");
-      if (semilla % 5 === 0) ocupados.push("03:00 PM");
-      if (semilla % 3 === 0) ocupados.push("10:00 AM");
-      return ocupados;
-    }
     /* -----------------------------------------------------------------------
       4. CALENDARIO
       ----------------------------------------------------------------------- */
@@ -1354,28 +1346,57 @@ textarea:focus-visible,
       return `${diaSemana}, ${fecha.getDate()} de ${NOMBRES_MES[fecha.getMonth()]} de ${fecha.getFullYear()}`;
     }
 
-    function seleccionarDia(fecha) {
+async function seleccionarDia(fecha) {
       estado.diaSeleccionado = fecha;
       estado.horaSeleccionada = null;
       renderizarCalendario();
-      renderizarHorarios(fecha);
-      actualizarProgreso();
-      actualizarBotonConfirmar();
-
+      
       el.seccionHorarios.hidden = false;
       requestAnimationFrame(() => {
         el.seccionHorarios.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
 
+      // Llamamos a la función asíncrona para buscar la disponibilidad real
+      await renderizarHorarios(fecha);
+      
+      actualizarProgreso();
+      actualizarBotonConfirmar();
       anunciar(`Día ${fecha.getDate()} de ${NOMBRES_MES[fecha.getMonth()]} seleccionado.`);
     }
 
-    function renderizarHorarios(fecha) {
+    async function renderizarHorarios(fecha) {
       el.fechaElegidaTexto.textContent = formatearFechaLarga(fecha);
-      el.horariosGrid.innerHTML = "";
+      el.horariosGrid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; font-size: 13.5px; color: var(--color-dorado);'>Verificando disponibilidad...</p>";
 
-      const ocupados = horariosOcupadosPara(fecha);
+      // Dar formato AAAA-MM-DD para consultar a la base de datos
+      const anio = fecha.getFullYear();
+      const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+      const dia = String(fecha.getDate()).padStart(2, '0');
+      const fechaFormateada = `${anio}-${mes}-${dia}`;
+
+      let ocupados = [];
+      try {
+        const res = await fetch(`/api/horarios-ocupados/${fechaFormateada}`);
+        if (res.ok) {
+          ocupados = await res.json();
+        }
+      } catch (error) {
+        console.warn("Fallo al conectar con el servidor, leyendo caché local.");
+        const citasLocales = JSON.parse(localStorage.getItem('ankaa_citas') || '[]');
+        ocupados = citasLocales
+          .filter(c => c.horario && c.horario.fecha === fechaFormateada)
+          .map(c => c.horario.horaInicio);
+      }
+
+      el.horariosGrid.innerHTML = "";
+      
+      // Filtrar horas base quitando las que ya están ocupadas
       const disponibles = HORARIOS_BASE.filter((h) => !ocupados.includes(h));
+
+      if (disponibles.length === 0) {
+        el.horariosGrid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; font-size: 14px; color: var(--color-cafe-suave);'>Ya no hay turnos disponibles para este día.</p>";
+        return;
+      }
 
       disponibles.forEach((hora) => {
         const boton = document.createElement("button");
@@ -1387,7 +1408,6 @@ textarea:focus-visible,
         el.horariosGrid.appendChild(boton);
       });
     }
-
     function seleccionarHora(hora, botonElegido) {
       estado.horaSeleccionada = hora;
 
