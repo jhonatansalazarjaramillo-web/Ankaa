@@ -7,6 +7,17 @@ const PORT = process.env.PORT || 3000;
 
 const DB_PATH = path.join(__dirname, 'Base de datos', 'database.json');
 
+function leerDB() {
+  if (!fs.existsSync(DB_PATH)) {
+    return { admins: [], horarios: [], citas: [] };
+  }
+  const raw = fs.readFileSync(DB_PATH, 'utf-8');
+  return JSON.parse(raw);
+}
+
+function guardarDB(datos) {
+  fs.writeFileSync(DB_PATH, JSON.stringify(datos, null, 2), 'utf-8');
+}
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
