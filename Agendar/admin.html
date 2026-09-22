@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel de Citas · Ankaa</title>
   <link rel="icon" type="image/png" href="../Imagen inicial.jpg">
-  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
 
-    
+
     :root {
       --color-blanco: #FEFDFB;
       --color-beige: #F1E8D8;
@@ -335,151 +335,177 @@
     </div>
   </div>
 
-  <script>
-    let listadoCitas = [];
-    let filtroActual = 'todas';
+<script>
+  /* =========================================================================
+     ANKAA · Panel de Administración — Conexión Directa con Supabase
+     ========================================================================= */
 
-    function esDelUltimoMes(fechaString) {
-      if (!fechaString) return false;
-      const fecha = new Date(fechaString + 'T00:00:00');
-      const hoy = new Date();
-      const hace30Dias = new Date();
-      hace30Dias.setDate(hoy.getDate() - 30);
-      return fecha >= hace30Dias && fecha <= hoy;
+  const SUPABASE_URL = "https://dtjmfiydqjdvukojfgsw.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0am1maXlkcWpkdnVrb2pmZ3N3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MjI4NTcsImV4cCI6MjEwNDk5ODg1N30.E-yitBKj2Y3uXyKutGIv-GEmgBq0_fkgF5OCZ9XcvtE";
+  const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+  let listadoCitas = [];
+  let filtroActual = "Todas";
+
+  const el = {
+    totalReservas: document.getElementById("total-reservas"),
+    porRevisar: document.getElementById("por-revisar"),
+    citasConfirmadas: document.getElementById("citas-confirmadas"),
+    atendidasMes: document.getElementById("atendidas-mes"),
+    contenedorCitas: document.getElementById("contenedor-citas"),
+    btnActualizar: document.getElementById("btn-actualizar"),
+    pestanas: document.querySelectorAll(".filtro-btn")
+  };
+
+  async function cargarCitas() {
+    try {
+      if (!supabase) throw new Error("Cliente de Supabase no inicializado");
+
+      const { data, error } = await supabase
+        .from("citas")
+        .select("*")
+        .order("id", { ascending: false });
+
+      if (error) throw error;
+
+      listadoCitas = data.map(c => ({
+        id: c.id,
+        nombrePaciente: c.nombre,
+        telefono: c.telefono,
+        correo: c.correo,
+        motivo: c.motivo,
+        metodoPago: c.metodo_pago,
+        comprobante: c.comprobante,
+        estado: c.estado,
+        fechaAtendida: c.fecha_atendida,
+        horario: {
+          fecha: c.fecha,
+          horaInicio: c.hora
+        }
+      }));
+    } catch (err) {
+      console.error("Error al cargar citas desde Supabase:", err);
+      listadoCitas = [];
     }
 
-    async function cargarCitas() {
-      try {
-        const res = await fetch('/api/citas');
-        listadoCitas = await res.json();
-      } catch (err) {
-        listadoCitas = JSON.parse(localStorage.getItem('ankaa_citas') || '[]');
-      }
-      actualizarMetricas();
-      renderizarCitas();
+    actualizarMetricas();
+    renderizarCitas();
+  }
+
+  function actualizarMetricas() {
+    const total = listadoCitas.length;
+    const pendientes = listadoCitas.filter(c => c.estado === "Pendiente de comprobante").length;
+    const confirmadas = listadoCitas.filter(c => c.estado === "Confirmada").length;
+    const atendidas = listadoCitas.filter(c => c.estado === "Atendida").length;
+
+    if (el.totalReservas) el.totalReservas.textContent = total;
+    if (el.porRevisar) el.porRevisar.textContent = pendientes;
+    if (el.citasConfirmadas) el.citasConfirmadas.textContent = confirmadas;
+    if (el.atendidasMes) el.atendidasMes.textContent = atendidas;
+  }
+
+  function renderizarCitas() {
+    if (!el.contenedorCitas) return;
+    el.contenedorCitas.innerHTML = "";
+
+    const citasFiltradas = listadoCitas.filter(c => {
+      if (filtroActual === "Todas") return true;
+      if (filtroActual === "Por Revisar") return c.estado === "Pendiente de comprobante";
+      if (filtroActual === "Confirmadas") return c.estado === "Confirmada";
+      if (filtroActual === "Historial (Último mes)") return c.estado === "Atendida";
+      return true;
+    });
+
+    if (citasFiltradas.length === 0) {
+      el.contenedorCitas.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--color-cafe-suave); padding: 40px 0;'>No hay reservas registradas en esta sección.</p>";
+      return;
     }
 
-    function actualizarMetricas() {
-      document.getElementById('total-citas').textContent = listadoCitas.length;
-      document.getElementById('total-pendientes').textContent = 
-        listadoCitas.filter(c => c.estado === 'Pendiente de comprobante').length;
-      document.getElementById('total-confirmadas').textContent = 
-        listadoCitas.filter(c => c.estado === 'Confirmada').length;
-      document.getElementById('total-mes').textContent = 
-        listadoCitas.filter(c => c.estado === 'Atendida' && (esDelUltimoMes(c.fechaAtendida) || esDelUltimoMes(c.horario?.fecha))).length;
-    }
+    citasFiltradas.forEach(cita => {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "tarjeta-cita";
 
-    function filtrarCitas(estado, boton) {
-      filtroActual = estado;
-      document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('activo'));
-      boton.classList.add('activo');
-      renderizarCitas();
-    }
+      const btnComprobanteHtml = cita.comprobante
+        ? `<div style="margin: 12px 0; border: 1px dashed var(--color-borde); padding: 8px; border-radius: 8px; text-align: center;">
+             <p style="font-size: 11px; margin: 0 0 6px 0; color: var(--color-cafe-suave);">Comprobante adjunto</p>
+             <button type="button" class="btn-comprobante" onclick="abrirModalComprobante('${cita.id}')" style="background: var(--color-dorado); color: white; border: none; padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">Ver Comprobante</button>
+           </div>`
+        : "";
 
-    function renderizarCitas() {
-      const contenedor = document.getElementById('contenedor-citas');
-      let filtradas = [];
-
-      if (filtroActual === 'todas') {
-        filtradas = listadoCitas;
-      } else if (filtroActual === 'ultimo-mes') {
-        filtradas = listadoCitas.filter(c => c.estado === 'Atendida' && (esDelUltimoMes(c.fechaAtendida) || esDelUltimoMes(c.horario?.fecha)));
-      } else {
-        filtradas = listadoCitas.filter(c => c.estado === filtroActual);
-      }
-
-      if (!filtradas.length) {
-        contenedor.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; background: white; border-radius: 20px;">No hay citas en esta sección.</div>`;
-        return;
-      }
-
-      contenedor.innerHTML = filtradas.map(cita => {
-        const fecha = cita.horario?.fecha || 'Sin fecha';
-        const hora = cita.horario?.horaInicio || '';
-        const telLimpio = (cita.telefono || '').replace(/\D/g, '');
-        const esPendiente = cita.estado === 'Pendiente de comprobante';
-        const esConfirmada = cita.estado === 'Confirmada';
-
-        return `
-          <article class="cita-card">
-            <div>
-              <div class="cita-card__cabecera">
-                <div>
-                  <span style="font-size: 13px; font-weight: 700; color: var(--color-dorado);">${fecha}</span>
-                  <p style="font-weight: 700;">${hora}</p>
-                </div>
-                <span class="badge-estado badge-estado--${esPendiente ? 'pendiente' : cita.estado.toLowerCase()}">
-                  ${cita.estado}
-                </span>
-              </div>
-
-              <h2 class="cita-paciente">${cita.nombrePaciente}</h2>
-
-              <ul class="cita-detalles">
-                <li>📞 <strong>Tel:</strong> ${cita.telefono}</li>
-                <li>💳 <strong>Pago:</strong> ${cita.metodoPago || 'Efectivo'}</li>
-              </ul>
-
-              ${cita.comprobante ? `
-                <div class="caja-comprobante">
-                  <span style="font-size: 12px; color: var(--color-cafe-suave);">Comprobante adjunto</span><br>
-                  <button class="btn-ver-comprobante" onclick="abrirVisor('${cita.comprobante}')">Ver Comprobante</button>
-                </div>
-              ` : ''}
-
-              <div class="cita-motivo">
-                <strong>Motivo:</strong> ${cita.motivo || 'No indicado'}
-              </div>
-            </div>
-
-            <div class="cita-acciones">
-              ${esPendiente ? `
-                <button class="btn-accion btn-accion--aceptar" onclick="cambiarEstado('${cita.id}', 'Confirmada')">
-                  ✓ Aceptar Comprobante
-                </button>
-              ` : ''}
-
-              ${esConfirmada ? `
-                <button class="btn-accion btn-accion--atendida" onclick="cambiarEstado('${cita.id}', 'Atendida')">
-                  Marcar Atendida
-                </button>
-              ` : ''}
-
-              <a href="https://wa.me/57${telLimpio}?text=Hola%20${encodeURIComponent(cita.nombrePaciente)},%20te%20escribo%20de%20Ankaa." 
-                 target="_blank" class="btn-accion btn-accion--wsp">
-                WhatsApp
-              </a>
-            </div>
-          </article>
+      let botonesAccionHtml = "";
+      if (cita.estado === "Pendiente de comprobante") {
+        botonesAccionHtml = `
+          <button type="button" onclick="cambiarEstado(${cita.id}, 'Confirmada')" style="background: var(--color-dorado); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 8px; width: 100%;">Confirmar Pago</button>
         `;
-      }).reverse().join('');
-    }
-
-    async function cambiarEstado(id, nuevoEstado) {
-      try {
-        await fetch(`/api/citas/${id}/estado`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ estado: nuevoEstado })
-        });
-      } catch (e) {
-        const cita = listadoCitas.find(c => c.id === id);
-        if (cita) cita.estado = nuevoEstado;
-        localStorage.setItem('ankaa_citas', JSON.stringify(listadoCitas));
+      } else if (cita.estado === "Confirmada") {
+        botonesAccionHtml = `
+          <button type="button" onclick="cambiarEstado(${cita.id}, 'Atendida')" style="background: #2E7D32; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 8px; width: 100%;">Marcar como Atendida</button>
+        `;
       }
-      cargarCitas();
-    }
 
-    function abrirVisor(base64) {
-      document.getElementById('modal-img').src = base64;
-      document.getElementById('modal-visor').hidden = false;
-    }
+      tarjeta.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+          <div>
+            <span style="font-size: 12px; font-weight: 600; color: var(--color-dorado);">${cita.horario.fecha}</span>
+            <div style="font-size: 18px; font-weight: 700; color: var(--color-cafe);">${cita.horario.horaInicio}</div>
+          </div>
+          <span style="font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 12px; background: rgba(185, 151, 91, 0.15); color: var(--color-dorado); text-transform: uppercase;">${cita.estado}</span>
+        </div>
+        <h3 style="margin: 8px 0 4px 0; font-size: 16px; color: var(--color-cafe);">${cita.nombrePaciente}</h3>
+        <p style="margin: 2px 0; font-size: 13px; color: var(--color-cafe-suave);">📞 Tel: ${cita.telefono}</p>
+        <p style="margin: 2px 0; font-size: 13px; color: var(--color-cafe-suave);">💳 Pago: ${cita.metodoPago}</p>
+        ${btnComprobanteHtml}
+        <div style="background: var(--color-beige-suave); padding: 8px 12px; border-radius: 8px; margin: 10px 0; font-size: 12.5px; color: var(--color-cafe);">
+          <strong>Motivo:</strong> ${cita.motivo || "No especificado"}
+        </div>
+        <a href="https://wa.me/57${cita.telefono.replace(/\\D/g, '')}" target="_blank" rel="noopener noreferrer" style="display: block; text-align: center; background: #25D366; color: white; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-top: 8px;">WhatsApp</a>
+        ${botonesAccionHtml}
+      `;
 
-    function cerrarVisor() {
-      document.getElementById('modal-visor').hidden = true;
-    }
+      el.contenedorCitas.appendChild(tarjeta);
+    });
+  }
 
-    document.addEventListener('DOMContentLoaded', cargarCitas);
-  </script>
-</body>
+  async function cambiarEstado(id, nuevoEstado) {
+    try {
+      const datosActualizar = { estado: nuevoEstado };
+      if (nuevoEstado === "Atendida") {
+        datosActualizar.fecha_atendida = new Date().toISOString().split("T")[0];
+      }
+
+      const { error } = await supabase
+        .from("citas")
+        .update(datosActualizar)
+        .eq("id", id);
+
+      if (error) throw error;
+      await cargarCitas();
+    } catch (e) {
+      console.error("Error al actualizar estado:", e);
+      alert("No se pudo actualizar el estado de la reserva.");
+    }
+  }
+
+  function abrirModalComprobante(id) {
+    const cita = listadoCitas.find(c => String(c.id) === String(id));
+    if (!cita || !cita.comprobante) return;
+    const ventana = window.open("");
+    ventana.document.write(`<img src="${cita.comprobante}" style="max-width:100%; height:auto;" alt="Comprobante">`);
+  }
+
+  if (el.btnActualizar) {
+    el.btnActualizar.addEventListener("click", cargarCitas);
+  }
+
+  el.pestanas.forEach(btn => {
+    btn.addEventListener("click", () => {
+      el.pestanas.forEach(b => b.classList.remove("activa"));
+      btn.classList.add("activa");
+      filtroActual = btn.textContent.trim();
+      renderizarCitas();
+    });
+  });
+
+  cargarCitas();
+</script>
 </html>

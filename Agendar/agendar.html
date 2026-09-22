@@ -1181,20 +1181,19 @@ textarea:focus-visible,
 
 <script>
   /* =========================================================================
-     ANKAA · Agendar cita — Lógica corregida y completa
+     ANKAA · Agendar cita — Integración completa con Supabase
      ========================================================================= */
 
-  const SUPABASE_URL = "PEGA_AQUI_TU_PROJECT_URL";
-  const SUPABASE_ANON_KEY = "PEGA_AQUI_TU_ANON_KEY";
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+  const SUPABASE_URL = "https://dtjmfiydqjdvukojfgsw.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0am1maXlkcWpkdnVrb2pmZ3N3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MjI4NTcsImV4cCI6MjEwNDk5ODg1N30.E-yitBKj2Y3uXyKutGIv-GEmgBq0_fkgF5OCZ9XcvtE";
+  const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
   (function () {
     "use strict";
 
     /* -----------------------------------------------------------------------
-      1. ESTADO DE LA APLICACIÓN
-      ----------------------------------------------------------------------- */
+       1. ESTADO DE LA APLICACIÓN
+       ----------------------------------------------------------------------- */
 
     const estado = {
       fechaVisible: new Date(),
@@ -1208,7 +1207,8 @@ textarea:focus-visible,
     ];
 
     const NOMBRES_DIA_CORTOS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
-// Horarios de 9:00 AM a 5:00 PM (la última sesión inicia a las 4:00 PM y finaliza a las 5:00 PM)
+
+    // Horarios base de atención
     const HORARIOS_BASE = [
       "09:00 AM", 
       "10:00 AM", 
@@ -1220,8 +1220,8 @@ textarea:focus-visible,
     let comprobanteBase64 = null;
 
     /* -----------------------------------------------------------------------
-      2. REFERENCIAS AL DOM
-      ----------------------------------------------------------------------- */
+       2. REFERENCIAS AL DOM
+       ----------------------------------------------------------------------- */
 
     const el = {
       btnVolver: document.getElementById("btn-volver"),
@@ -1259,8 +1259,8 @@ textarea:focus-visible,
     };
 
     /* -----------------------------------------------------------------------
-      3. DISPONIBILIDAD
-      ----------------------------------------------------------------------- */
+       3. DISPONIBILIDAD
+       ----------------------------------------------------------------------- */
 
     function esDiaPasado(fecha) {
       const hoy = new Date();
@@ -1271,14 +1271,13 @@ textarea:focus-visible,
     function diaTieneDisponibilidad(fecha) {
       const diaSemana = fecha.getDay();
       if (esDiaPasado(fecha)) return false;
-
-      if (diaSemana === 0) return false; // Solo cierra domingos
-
+      if (diaSemana === 0) return false; // Cierra domingos
       return true; // Lunes a sábado habilitados
     }
+
     /* -----------------------------------------------------------------------
-      4. CALENDARIO
-      ----------------------------------------------------------------------- */
+       4. CALENDARIO
+       ----------------------------------------------------------------------- */
 
     function renderizarCalendario() {
       const anio = estado.fechaVisible.getFullYear();
@@ -1344,15 +1343,15 @@ textarea:focus-visible,
     }
 
     /* -----------------------------------------------------------------------
-      5. SELECCIÓN DE DÍA Y HORA
-      ----------------------------------------------------------------------- */
+       5. SELECCIÓN DE DÍA Y HORA (CONSULTA A SUPABASE)
+       ----------------------------------------------------------------------- */
 
     function formatearFechaLarga(fecha) {
       const diaSemana = NOMBRES_DIA_CORTOS[fecha.getDay()];
       return `${diaSemana}, ${fecha.getDate()} de ${NOMBRES_MES[fecha.getMonth()]} de ${fecha.getFullYear()}`;
     }
 
-async function seleccionarDia(fecha) {
+    async function seleccionarDia(fecha) {
       estado.diaSeleccionado = fecha;
       estado.horaSeleccionada = null;
       renderizarCalendario();
@@ -1362,7 +1361,6 @@ async function seleccionarDia(fecha) {
         el.seccionHorarios.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
 
-      // Llamamos a la función asíncrona para buscar la disponibilidad real
       await renderizarHorarios(fecha);
       
       actualizarProgreso();
@@ -1374,7 +1372,6 @@ async function seleccionarDia(fecha) {
       el.fechaElegidaTexto.textContent = formatearFechaLarga(fecha);
       el.horariosGrid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; font-size: 13.5px; color: var(--color-dorado);'>Verificando disponibilidad...</p>";
 
-      // Dar formato AAAA-MM-DD para consultar a la base de datos
       const anio = fecha.getFullYear();
       const mes = String(fecha.getMonth() + 1).padStart(2, '0');
       const dia = String(fecha.getDate()).padStart(2, '0');
@@ -1382,21 +1379,25 @@ async function seleccionarDia(fecha) {
 
       let ocupados = [];
       try {
-        const res = await fetch(`/api/horarios-ocupados/${fechaFormateada}`);
-        if (res.ok) {
-          ocupados = await res.json();
+        if (supabaseClient) {
+          // Consultar horas tomadas en la fecha que no estén canceladas
+          const { data, error } = await supabaseClient
+            .from("citas")
+            .select("hora")
+            .eq("fecha", fechaFormateada)
+            .neq("estado", "Cancelada");
+
+          if (error) throw error;
+          if (data) {
+            ocupados = data.map(c => c.hora);
+          }
         }
       } catch (error) {
-        console.warn("Fallo al conectar con el servidor, leyendo caché local.");
-        const citasLocales = JSON.parse(localStorage.getItem('ankaa_citas') || '[]');
-        ocupados = citasLocales
-          .filter(c => c.horario && c.horario.fecha === fechaFormateada)
-          .map(c => c.horario.horaInicio);
+        console.warn("Fallo al consultar disponibilidad en Supabase:", error);
       }
 
       el.horariosGrid.innerHTML = "";
       
-      // Filtrar horas base quitando las que ya están ocupadas
       const disponibles = HORARIOS_BASE.filter((h) => !ocupados.includes(h));
 
       if (disponibles.length === 0) {
@@ -1414,6 +1415,7 @@ async function seleccionarDia(fecha) {
         el.horariosGrid.appendChild(boton);
       });
     }
+
     function seleccionarHora(hora, botonElegido) {
       estado.horaSeleccionada = hora;
 
@@ -1436,8 +1438,8 @@ async function seleccionarDia(fecha) {
     }
 
     /* -----------------------------------------------------------------------
-      6. MÉTODO DE PAGO Y VALIDACIÓN
-      ----------------------------------------------------------------------- */
+       6. MÉTODO DE PAGO Y VALIDACIÓN
+       ----------------------------------------------------------------------- */
 
     const radiosPago = document.querySelectorAll('input[name="metodo-pago"]');
 
@@ -1492,8 +1494,8 @@ async function seleccionarDia(fecha) {
     el.formulario.addEventListener("change", actualizarBotonConfirmar);
 
     /* -----------------------------------------------------------------------
-      7. INDICADOR DE PROGRESO
-      ----------------------------------------------------------------------- */
+       7. INDICADOR DE PROGRESO
+       ----------------------------------------------------------------------- */
 
     function actualizarProgreso() {
       const pasoActual = !estado.diaSeleccionado ? 1 : !estado.horaSeleccionada ? 2 : 3;
@@ -1511,8 +1513,8 @@ async function seleccionarDia(fecha) {
     }
 
     /* -----------------------------------------------------------------------
-      8. CONFIRMAR CITA
-      ----------------------------------------------------------------------- */
+       8. CONFIRMAR CITA (GUARDADO DIRECTO EN SUPABASE)
+       ----------------------------------------------------------------------- */
 
     el.btnConfirmar.addEventListener("click", async () => {
       if (el.btnConfirmar.disabled) return;
@@ -1524,46 +1526,58 @@ async function seleccionarDia(fecha) {
       
       const radioSeleccionado = document.querySelector('input[name="metodo-pago"]:checked');
       const metodoPago = radioSeleccionado ? radioSeleccionado.value : 'Efectivo';
+      const estadoInicial = metodoPago === 'Nequi' ? 'Pendiente de comprobante' : 'Confirmada';
 
       const datosReserva = {
         nombre: el.campoNombre.value.trim(),
         telefono: el.campoTelefono.value.trim(),
-        correo: el.campoCorreo ? el.campoCorreo.value.trim() : '',
-        motivo: el.campoMotivo ? el.campoMotivo.value.trim() : '',
+        correo: el.campoCorreo ? el.campoCorreo.value.trim() : null,
+        motivo: el.campoMotivo ? el.campoMotivo.value.trim() : null,
         fecha: fechaFormateada,
         hora: estado.horaSeleccionada,
-        metodoPago: metodoPago,
-        comprobante: comprobanteBase64
+        metodo_pago: metodoPago,
+        comprobante: comprobanteBase64,
+        estado: estadoInicial
       };
 
       try {
         el.btnConfirmar.disabled = true;
         el.btnConfirmar.textContent = "Agendando...";
 
-        const respuesta = await fetch('/api/citas', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datosReserva)
-        });
+        if (!supabaseClient) {
+          throw new Error("No se pudo inicializar el cliente de Supabase.");
+        }
 
-        if (!respuesta.ok) throw new Error("Error en servidor");
+        // Verificación anti-choque de horario antes de insertar
+        const { data: choque, error: errorChoque } = await supabaseClient
+          .from("citas")
+          .select("id")
+          .eq("fecha", fechaFormateada)
+          .eq("hora", estado.horaSeleccionada)
+          .neq("estado", "Cancelada");
+
+        if (errorChoque) throw errorChoque;
+
+        if (choque && choque.length > 0) {
+          alert("Lo sentimos, este horario acaba de ser reservado. Por favor elige otro turno.");
+          await renderizarHorarios(estado.diaSeleccionado);
+          return;
+        }
+
+        // Insertar en Supabase
+        const { error: errorInsert } = await supabaseClient
+          .from("citas")
+          .insert([datosReserva]);
+
+        if (errorInsert) throw errorInsert;
+
       } catch (error) {
-        console.warn("Modo local activo:", error);
-        const citasLocales = JSON.parse(localStorage.getItem('ankaa_citas') || '[]');
-        citasLocales.push({
-          id: 'cita_' + Date.now(),
-          nombrePaciente: datosReserva.nombre,
-          telefono: datosReserva.telefono,
-          correo: datosReserva.correo,
-          motivo: datosReserva.motivo,
-          metodoPago: datosReserva.metodoPago,
-          comprobante: datosReserva.comprobante,
-          estado: datosReserva.metodoPago === 'Nequi' ? 'Pendiente de comprobante' : 'Confirmada',
-          horario: { fecha: datosReserva.fecha, horaInicio: datosReserva.hora }
-        });
-        localStorage.setItem('ankaa_citas', JSON.stringify(citasLocales));
+        console.error("Error al registrar la cita en Supabase:", error);
+        alert("Hubo un error al procesar tu solicitud. Por favor intenta nuevamente.");
+        return;
       } finally {
         el.btnConfirmar.textContent = "Confirmar cita";
+        el.btnConfirmar.disabled = false;
       }
 
       el.resumenFecha.textContent = formatearFechaLarga(estado.diaSeleccionado);
@@ -1572,12 +1586,12 @@ async function seleccionarDia(fecha) {
 
       el.pantallaExito.hidden = false;
       document.body.style.overflow = "hidden";
-      anunciar("Tu cita ha sido registrada.");
+      anunciar("Tu cita ha sido registrada con éxito.");
     });
 
     /* -----------------------------------------------------------------------
-      9. REINICIAR FLUJO Y NAVEGACIÓN
-      ----------------------------------------------------------------------- */
+       9. REINICIAR FLUJO Y NAVEGACIÓN
+       ----------------------------------------------------------------------- */
 
     function reiniciarFlujo() {
       estado.diaSeleccionado = null;
@@ -1616,8 +1630,8 @@ async function seleccionarDia(fecha) {
     });
 
     /* -----------------------------------------------------------------------
-      10. ACCESIBILIDAD E INICIALIZACIÓN
-      ----------------------------------------------------------------------- */
+       10. ACCESIBILIDAD E INICIALIZACIÓN
+       ----------------------------------------------------------------------- */
 
     function anunciar(mensaje) {
       if (el.anuncioAccesible) el.anuncioAccesible.textContent = mensaje;
@@ -1626,6 +1640,5 @@ async function seleccionarDia(fecha) {
     renderizarCalendario();
     actualizarProgreso();
   })();
-  </script>
-</body>
+</script>
 </html>
