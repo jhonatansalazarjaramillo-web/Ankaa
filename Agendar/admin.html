@@ -342,7 +342,9 @@
 
   const SUPABASE_URL = "https://dtjmfiydqjdvukojfgsw.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0am1maXlkcWpkdnVrb2pmZ3N3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MjI4NTcsImV4cCI6MjEwNDk5ODg1N30.E-yitBKj2Y3uXyKutGIv-GEmgBq0_fkgF5OCZ9XcvtE";
-  const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+  const supabaseClient = (typeof window.supabase !== "undefined" && window.supabase.createClient)
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
 
   let listadoCitas = [];
   let filtroActual = "Todas";
@@ -359,9 +361,9 @@
 
   async function cargarCitas() {
     try {
-      if (!supabase) throw new Error("Cliente de Supabase no inicializado");
+      if (!supabaseClient) throw new Error("Cliente de Supabase no inicializado");
 
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from("citas")
         .select("*")
         .order("id", { ascending: false });
@@ -473,7 +475,7 @@
         datosActualizar.fecha_atendida = new Date().toISOString().split("T")[0];
       }
 
-      const { error } = await supabase
+      const { error } = await supabaseClient
         .from("citas")
         .update(datosActualizar)
         .eq("id", id);
@@ -506,6 +508,7 @@
     });
   });
 
+  // Carga inicial directa
   cargarCitas();
 </script>
 </html>
